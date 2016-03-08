@@ -5,10 +5,9 @@ Make music with images
   - OpenCV
   - Python
 
-
 ## Specifications
 ### Primary
-  - Find at least 5 interesting images (1080x1920)
+  - Find at least 5 interesting images (1920x1080)
   - Procedural music (external library)
   - Detect dominant colors (hot/cold)
   - Detect faces (Yes/No)
