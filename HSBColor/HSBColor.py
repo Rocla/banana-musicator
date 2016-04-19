@@ -27,7 +27,7 @@ class HSBColor:
         """
         return self._s
 
-    def brightness(self):
+    def initbrightness(self):
         """
         :return: brightness value : int [0-255[
         """
@@ -78,6 +78,13 @@ class HSBColor:
             return 1.0-(float(work_color) / float(work_cold))
 
         return 0
+
+    def brightness(self):
+        """
+        :return: converted brightness value : int [0-1]
+        """
+        return self._b / float(255)
+
 
     def temperature(self):
         """
