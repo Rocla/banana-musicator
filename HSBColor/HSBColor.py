@@ -69,13 +69,13 @@ class HSBColor:
             work_color = self._h - INF_LIMIT
             work_cold = PERFECT_COLD-INF_LIMIT
 
-            return work_color / work_cold
+            return float(work_color) / float(work_cold)
 
         if(self._h>PERFECT_COLD and self._h < SUP_LIMIT):
             work_color = self._h - PERFECT_COLD
             work_cold = SUP_LIMIT - PERFECT_COLD
 
-            return 1.0-(work_color / work_cold)
+            return 1.0-(float(work_color) / float(work_cold))
 
         return 0
 
@@ -83,4 +83,5 @@ class HSBColor:
         """
         :return: temperature estimation [-1.0 - 1.0] (float)
         """
+
         return self._warm() - self._cold()
