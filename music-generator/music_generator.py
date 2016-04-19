@@ -2,12 +2,14 @@ import math
 import wave
 import random
 from array import array
+import music_player as player
+
+import sys
+
 
 #PROGRESSION = ["Cmaj7", "Dm7", "G7", "C6"]
 #PROGRESSION = ["C6th", "E13th", "A6th", "GDobro", "DMajor", "C#Minor"]
 #PROGRESSION = ["Cmaj7", "Dm7", "G7", "C6", "C6th", "E13th", "A6th", "GDobro", "DMajor", "C#Minor"]
-
-PROGRESSION = []
 
 # CHORDS = {
 #     "Dm7": [38, 50, 53, 57, 60],
@@ -22,21 +24,21 @@ PROGRESSION = []
 #     "C#Minor": [64, 61, 56, 52, 50, 47]
 # }
 
-# CHORDS = {
-#     "Dm7": [38, 50, 53, 57, 60],
-#     "G7": [31, 50, 53, 55, 59],
-#     "Cmaj7": [36, 48, 52, 55, 59],
-#     "C6": [36, 48, 52, 57, 64]
-# }
-
 CHORDS = {
-    "C6th": [64, 60, 57, 55, 52, 48],
-    "E13th": [64, 61, 59, 56, 54, 50, 44, 40],
-    "A6th": [64, 61, 57, 54, 52, 49, 45, 42],
-    "GDobro": [64, 59, 55, 50, 47, 43],
-    "DMajor": [66, 62, 57, 54, 50, 38],
-    "C#Minor": [64, 61, 56, 52, 50, 47]
+    "Dm7": [38, 50, 53, 57, 60],
+    "G7": [31, 50, 53, 55, 59],
+    "Cmaj7": [36, 48, 52, 55, 59],
+    "C6": [36, 48, 52, 57, 64]
 }
+
+# CHORDS = {
+#     "C6th": [64, 60, 57, 55, 52, 48],
+#     "E13th": [64, 61, 59, 56, 54, 50, 44, 40],
+#     "A6th": [64, 61, 57, 54, 52, 49, 45, 42],
+#     "GDobro": [64, 59, 55, 50, 47, 43],
+#     "DMajor": [66, 62, 57, 54, 50, 38],
+#     "C#Minor": [64, 61, 56, 52, 50, 47]
+# }
 
 # CHORDS = {
 #     "major": [0, 4, 7, 12],
@@ -55,14 +57,6 @@ CHORDS = {
 TYPE = 0
 
 # Rock
-
-
-LENGHT = 8
-for chord in range(0, LENGHT):
-    i = random.randint(1, len(CHORDS))
-    PROGRESSION.append(list(CHORDS.keys())[i])
-
-print(PROGRESSION)
 
 class Voice(object):
     def __init__(self, note, length):
@@ -221,22 +215,57 @@ def quantizer(iterable):
     """ Converts floating point audio signals to 16 bit integers """
     return (int(32767.0 * sample) for sample in iterable)
 
-# create pipeline
-chords = chord_generator(PROGRESSION)
-comp_pattern = comp_pattern_generator_rock(chords)
-voices = voice_generator(comp_pattern)
-samples = voice_combiner(voices)
-attenuated_samples = amplifier(0.5, samples)
-output = quantizer(attenuated_samples)
 
-# prepare audio stream
-audiofile = wave.open("output.wav", "wb")
-audiofile.setnchannels(1)
-audiofile.setsampwidth(2)
-audiofile.setframerate(44100)
+def generate(id, type, harmony):
+    PROGRESSION = []
+    LENGHT = 1
+    for i in range(0, LENGHT):
+        chord = random.randint(0, len(CHORDS) - 1)
+        PROGRESSION.append(list(CHORDS.keys())[chord])
 
-# render samples
-output = list(output)
-audiofile.writeframes(array('h', output))
-audiofile.writeframes(array('h', output))
-audiofile.close()
+    print(PROGRESSION)
+
+    print(str(id))
+    # create pipeline
+    chords = chord_generator(PROGRESSION)
+    comp_pattern = comp_pattern_generator(chords)
+    voices = voice_generator(comp_pattern)
+    samples = voice_combiner(voices)
+    attenuated_samples = amplifier(0.5, samples)
+    output = quantizer(attenuated_samples)
+
+    # prepare audio stream
+    filename = "output-"+str(id)+".wav"
+    audiofile = wave.open(filename, "wb")
+    audiofile.setnchannels(1)
+    audiofile.setsampwidth(2)
+    audiofile.setframerate(44100)
+
+    # render samples
+    output = list(output)
+    audiofile.writeframes(array('h', output))
+    audiofile.writeframes(array('h', output))
+    audiofile.close()
+
+if __name__ == "__main__":
+    # create pipeline
+    chords = chord_generator(PROGRESSION)
+    comp_pattern = comp_pattern_generator(chords)
+    voices = voice_generator(comp_pattern)
+    samples = voice_combiner(voices)
+    attenuated_samples = amplifier(0.5, samples)
+    output = quantizer(attenuated_samples)
+
+    # prepare audio stream
+    audiofile = wave.open("output.wav", "wb")
+    audiofile.setnchannels(1)
+    audiofile.setsampwidth(2)
+    audiofile.setframerate(44100)
+
+    # render samples
+    output = list(output)
+    audiofile.writeframes(array('h', output))
+    audiofile.writeframes(array('h', output))
+    audiofile.close()
+
+    player.play("output.wav")
