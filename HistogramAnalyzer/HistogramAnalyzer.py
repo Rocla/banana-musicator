@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import operator
 
-class HistogramAnalizer:
+class HistogramAnalyzer:
 
     def __init__(self, img):
         self.img_rgb = img

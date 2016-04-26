@@ -1,11 +1,11 @@
-from HistogramAnalizer import HistogramAnalizer
+from HistogramAnalyzer import HistogramAnalyzer
 import cv2
 
 if __name__ == "__main__":
-    img = cv2.imread('images/abstract_landscape.jpg')
+    img = cv2.imread('../images/abstract_landscape.jpg')
     #cv2.imshow('original', img)
     
-    histo_tool = HistogramAnalizer(img)
+    histo_tool = HistogramAnalyzer(img)
     #histo_tool.show_hsv()
     #histo_tool.show_hsv_hist()
     print(histo_tool.get_main_hue())
