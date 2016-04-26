@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-class ImageElementDetector:
+class ImageElementDetect:
 	def __init__(self, filePath, verbose=False):
 		"""
 		Face utility
