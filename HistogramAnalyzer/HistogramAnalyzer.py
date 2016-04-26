@@ -23,7 +23,9 @@ class HistogramAnalyzer:
     def hist_hsv(self):
         self.img_hsv = cv2.cvtColor(self.img_rgb, cv2.COLOR_BGR2HSV)
         self.img_h, self.img_s, self.img_v = cv2.split(self.img_hsv)
-        self.hist_hsv = cv2.calcHist([self.img_hsv],[0],None,[180],[0,180])
+        self.hist_h = cv2.calcHist([self.img_hsv],[0],None,[180],[0,180])
+        self.hist_s = cv2.calcHist([self.img_hsv],[1],None,[256],[0,256])
+        self.hist_v = cv2.calcHist([self.img_hsv],[2],None,[256],[0,256])
 
     def show_rgb(self):
         cv2.imshow('RGB', self.img_rgb)
@@ -38,17 +40,40 @@ class HistogramAnalyzer:
         cv2.imshow('Value', self.img_v)
         
     def show_rgb_hist(self):
-        cv2.imshow('RGB Histogram', self.img_v)
+        plt.plot(self.hist_r)
+        plt.plot(self.hist_g)
+        plt.plot(self.hist_b)
+        plt.xlim([0,255])
+        plt.title('RGB')
+        plt.show()
+        
     
     def show_hsv_hist(self):
-        plt.plot(self.hist_hsv)
+        plt.plot(self.hist_h)
         plt.xlim([0,180])
+        plt.title('Hue')
         plt.show()
 
-    def get_main_hue(self):
-        max_hue_f = float(self.max_indice(self.hist_hsv))
+        plt.plot(self.hist_s)
+        plt.xlim([0,256])
+        plt.title('Saturation')
+        plt.show()
+
+        plt.plot(self.hist_v)
+        plt.xlim([0,256])
+        plt.title('Brightness / Value')
+        plt.show()
+
+    def get_hue_max(self):
+        max_hue_f = float(self.max_indice(self.hist_h))
         max_hue = max_hue_f / 180 * 256     #Get a value between 0 and 255
         return int(max_hue)
+        
+    def get_saturation_max(self):
+        return int(self.max_indice(self.hist_s))
+
+    def get_brigthness_max(self):
+        return int(self.max_indice(self.hist_v))
     
     def moyenne(self, hist):
         total = 0
