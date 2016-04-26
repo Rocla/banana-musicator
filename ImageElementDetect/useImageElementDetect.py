@@ -1,8 +1,8 @@
 __author__ = 'stevevisinand'
 
-from imageElementDetect import ImageElementDetector
+from ImageElementDetect import ImageElementDetect
 
 if __name__ == '__main__':
-    detector = ImageElementDetector('watson.jpg', True)
+    detector = ImageElementDetect('../images/watson.jpg', True)
 
     print("Nb faces : " + detector.countFaces())
