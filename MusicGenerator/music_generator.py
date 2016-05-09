@@ -2,13 +2,8 @@ import math
 import wave
 import random
 from array import array
-import music_player as player
 
 import sys
-
-# PROGRESSION = ["Cmaj7", "Dm7", "G7", "C6"]
-# PROGRESSION = ["C6th", "E13th", "A6th", "GDobro", "DMajor", "C#Minor"]
-# PROGRESSION = ["Cmaj7", "Dm7", "G7", "C6", "C6th", "E13th", "A6th", "GDobro", "DMajor", "C#Minor"]
 
 CHORDS = {
     "Dm7": [38, 50, 53, 57, 60],
@@ -151,9 +146,9 @@ def chord_generator(iterable):
 
 def comp_pattern_generator(pattern, iterable):
     randomValue = random.randint(0, 10)
-    if pattern == 0:
+    if pattern == 1:  # jazz
         return comp_pattern_generator_jazz(iterable)
-    elif pattern == 1:  # happy
+    elif pattern == 0:  # happy
         if randomValue % 8 == 0:
             return comp_pattern_generator_happy0(iterable)
         elif randomValue % 7 == 0:
@@ -479,5 +474,3 @@ if __name__ == "__main__":
     audiofile.writeframes(array('h', output))
     audiofile.writeframes(array('h', output))
     audiofile.close()
-
-    player.play("output.wav")
