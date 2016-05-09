@@ -22,7 +22,11 @@ class HistogramAnalyzer:
     def hist_hsv(self):
         self.img_hsv = cv2.cvtColor(self.img_rgb, cv2.COLOR_BGR2HSV)
         self.img_h, self.img_s, self.img_v = cv2.split(self.img_hsv)
-        self.hist_h = cv2.calcHist([self.img_hsv],[0],None,[180],[0,180])
+            
+        #mask = (self.img_v == 0) + (self.img_v == 100) + (self.img_s == 0)
+        #mask = np.logical_not(mask)
+
+        self.hist_h = cv2.calcHist([self.img_hsv],[0],self.img_s,[180],[0,180])
         self.hist_s = cv2.calcHist([self.img_hsv],[1],None,[256],[0,256])
         self.hist_v = cv2.calcHist([self.img_hsv],[2],None,[256],[0,256])
 
