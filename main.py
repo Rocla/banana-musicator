@@ -40,12 +40,7 @@ if __name__ == '__main__':
     ##FaceDetect
     detector = ImageElementDetect(imagePath, False)
     #print("Nb faces : " + detector.countFaces())
-    hasFaces = detector.hasFaces()  #TODO : Integrer dans ton code Roro (valeure boolean)
-
-
-
-
-
+    hasFaces = detector.hasFaces()
 
     #Get mood
     emotion_levels = ["HAPPY", "JAZZ", "EMO", "NEUTRAL", "SAD", "FACES"]
@@ -63,7 +58,7 @@ if __name__ == '__main__':
     tmp_emotion_levels = len(emotion_levels)
     tmp_emotion_unit = 100 / tmp_emotion_levels
     tmp_periods_to_play = 10
-    tmp_is_people = False
+    tmp_is_people = hasFaces
 
     #### Mood on a scale of -100..100 with 100:happy and -100:sad
     #### Add up of positive values
