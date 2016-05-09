@@ -14,7 +14,7 @@ from Orchestra import play_music
 
 if __name__ == '__main__':
 
-    imagePath = './images/sunset_blue.jpg'
+    imagePath = path + '/images/watson.jpg'
 
     #Extraction informations
     img = cv2.imread(imagePath)
@@ -38,9 +38,10 @@ if __name__ == '__main__':
     print("luminosite", color.brightness())
 
     ##FaceDetect
-    detector = ImageElementDetect(imagePath, False)
+    #detector = ImageElementDetect(imagePath, False)
     #print("Nb faces : " + detector.countFaces())
-    hasFaces = detector.hasFaces()
+    #hasFaces = detector.hasFaces()
+    hasFaces = False
 
     #Get mood
     emotion_levels = ["HAPPY", "JAZZ", "EMO", "NEUTRAL", "SAD", "FACES"]
@@ -52,12 +53,14 @@ if __name__ == '__main__':
     #### Each analyse add 1 unit to the total
     tmp_type_of_analyse = 2  # temperature, brightness
 
+    #### How long should be the song?
+    tmp_periods_to_play = 10
+
     tmp_temperature = color.temperature()
     tmp_max_luminosity = 1
     tmp_luminosity = color.brightness()*(1/tmp_max_luminosity)
     tmp_emotion_levels = len(emotion_levels)
     tmp_emotion_unit = 100 / tmp_emotion_levels
-    tmp_periods_to_play = 10
     tmp_is_people = hasFaces
 
     #### Mood on a scale of -100..100 with 100:happy and -100:sad
@@ -75,12 +78,16 @@ if __name__ == '__main__':
             break
         elif mood_value < 0 and abs(mood_value) <= i*tmp_emotion_unit:
             sentiment = abs(i-tmp_emotion_levels)
-            print("neg")
+            print(emotion_levels[i])
             break
         elif mood_value >= 0 and mood_value <= i*tmp_emotion_unit:
             sentiment = abs(i-tmp_emotion_levels)
-            print("pos")
+            print(emotion_levels[i])
             break
+
+    #Show Image
+    cv2.imshow('press on any keyboard key', img)
+    cv2.waitKey(0)
 
     #Play Music
     play_music(tmp_periods_to_play, sentiment)
