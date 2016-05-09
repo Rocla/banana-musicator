@@ -53,7 +53,7 @@ TYPE = 0
 
 # Rock
 
-class Voice(object):
+class Scale(object):
     def __init__(self, note, length):
         self.note = note
         self.length = length
@@ -74,15 +74,14 @@ class Voice(object):
         self.t += 1
 
         sample = next(self.adsr) * next(self.oscillator)
-
-        # Add filters and other neat effects here, e.g. by feeding the signal
-        # to a coroutine.
-
+        #print(sample)
         return sample
 
 
 class ADSREnvelope(object):
-    """ ADSR envelope generator class """
+    """
+    ADSR envelope generator class
+    """
 
     RATIO = 1.0 - 1.0 / math.e
 
@@ -92,6 +91,7 @@ class ADSREnvelope(object):
         self.level = 0.0
 
         compute_coefficient = lambda time: 1.0 - math.exp(-1.0 / (time * 44100.0))
+        # print(compute_coefficient)
 
         self.attack = compute_coefficient(attack)
         self.decay = compute_coefficient(decay)
@@ -124,10 +124,13 @@ class ADSREnvelope(object):
 
 
 def oscillator(pitch):
-    """ Generate a waveform at a given pitch """
+    """
+    Generate a waveform at a given pitch
+    """
     phi = 0.0
     frequency = (2.0 ** ((pitch - 69.0) / 12.0)) * 440.0
     delta = 2.0 * math.pi * frequency / 44100.0
+    #print(delta)
 
     while True:
         yield math.sin(phi) + math.sin(2.0 * phi)
@@ -135,16 +138,23 @@ def oscillator(pitch):
 
 
 def amplifier(gain, iterable):
-    """ Attenuate the input signal by a given gain factor """
+    """
+    Attenuate the input signal by a given gain factor
+    """
     return (gain * sample for sample in iterable)
 
 
 def chord_generator(iterable):
-    """ Converts chord symbols to a list of MIDI notes. """
+    """
+    Converts chord symbols to a list of MIDI notes.
+    """
     return (CHORDS[chord_symbol] for chord_symbol in iterable)
 
 
 def comp_pattern_generator(pattern, iterable):
+    """
+    Return a chord pattern randomly from a request pattern type
+    """
     randomValue = random.randint(0, 10)
     if pattern == 1:  # jazz
         return comp_pattern_generator_jazz(iterable)
@@ -211,7 +221,9 @@ def comp_pattern_generator(pattern, iterable):
 
 
 def comp_pattern_generator_jazz(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a jazz pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a jazzy pattern.
+    """
     for chord in iterable:
         yield (600, chord)
         yield (300, chord[0:1])
@@ -222,7 +234,9 @@ def comp_pattern_generator_jazz(iterable):
 
 
 def comp_pattern_generator_happy0(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a happy pattern.
+    """
     for chord in iterable:
         yield (200, chord)
         yield (200, chord[0:1])
@@ -230,9 +244,12 @@ def comp_pattern_generator_happy0(iterable):
         yield (200, chord)
         yield (200, chord)
         yield (200, chord[0:1])
+
 
 def comp_pattern_generator_happy1(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a happy pattern.
+    """
     for chord in iterable:
         yield (200, chord)
         yield (200, chord[0:1])
@@ -240,9 +257,12 @@ def comp_pattern_generator_happy1(iterable):
         yield (200, chord)
         yield (200, chord[0:2])
         yield (200, chord[0:1])
+
 
 def comp_pattern_generator_happy2(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a happy pattern.
+    """
     for chord in iterable:
         yield (200, chord)
         yield (200, chord[0:1])
@@ -250,9 +270,12 @@ def comp_pattern_generator_happy2(iterable):
         yield (200, chord)
         yield (200, chord[0:3])
         yield (200, chord)
+
 
 def comp_pattern_generator_happy3(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a happy pattern.
+    """
     for chord in iterable:
         yield (200, chord)
         yield (200, chord[0:1])
@@ -260,9 +283,12 @@ def comp_pattern_generator_happy3(iterable):
         yield (200, chord[0:2])
         yield (200, chord[0:3])
         yield (200, chord)
+
 
 def comp_pattern_generator_happy4(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a happy pattern.
+    """
     for chord in iterable:
         yield (200, chord[0:2])
         yield (200, chord[0:1])
@@ -270,9 +296,12 @@ def comp_pattern_generator_happy4(iterable):
         yield (200, chord[0:2])
         yield (200, chord[0:3])
         yield (200, chord)
+
 
 def comp_pattern_generator_happy5(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a happy pattern.
+    """
     for chord in iterable:
         yield (200, chord[0:2])
         yield (200, chord[0:1])
@@ -281,8 +310,11 @@ def comp_pattern_generator_happy5(iterable):
         yield (200, chord[0:3])
         yield (200, chord)
 
+
 def comp_pattern_generator_happy6(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a happy pattern.
+    """
     for chord in iterable:
         yield (200, chord[0:2])
         yield (200, chord[0:1])
@@ -291,8 +323,11 @@ def comp_pattern_generator_happy6(iterable):
         yield (200, chord[0:3])
         yield (200, chord[0:2])
 
+
 def comp_pattern_generator_happy7(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a happy pattern.
+    """
     for chord in iterable:
         yield (300, chord)
         yield (200, chord[2:3])
@@ -301,8 +336,11 @@ def comp_pattern_generator_happy7(iterable):
         yield (200, chord)
         yield (300, chord[2:3])
 
+
 def comp_pattern_generator_emotional1(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a emo pattern.
+    """
     for chord in iterable:
         yield (400, chord[0:2])
         yield (400, chord[0:1])
@@ -313,7 +351,9 @@ def comp_pattern_generator_emotional1(iterable):
 
 
 def comp_pattern_generator_emotional2(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a emo pattern.
+    """
     for chord in iterable:
         yield (500, chord[0:2])
         yield (500, chord[0:1])
@@ -322,8 +362,11 @@ def comp_pattern_generator_emotional2(iterable):
         yield (500, chord[0:3])
         yield (500, chord[0:2])
 
+
 def comp_pattern_generator_emotional3(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a emo pattern.
+    """
     for chord in iterable:
         yield (500, chord[0:2])
         yield (200, chord[0:1])
@@ -334,7 +377,9 @@ def comp_pattern_generator_emotional3(iterable):
 
 
 def comp_pattern_generator_emotional4(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a emo pattern.
+    """
     for chord in iterable:
         yield (500, chord[1:2])
         yield (200, chord[0:1])
@@ -343,8 +388,11 @@ def comp_pattern_generator_emotional4(iterable):
         yield (500, chord[2:3])
         yield (200, chord[1:2])
 
+
 def comp_pattern_generator_neutral1(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a neutral pattern.
+    """
     for chord in iterable:
         yield (600, chord[2:3])
         yield (400, chord[1:2])
@@ -353,8 +401,11 @@ def comp_pattern_generator_neutral1(iterable):
         yield (600, chord[2:3])
         yield (600, chord[3:4])
 
+
 def comp_pattern_generator_neutral2(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a neutral pattern.
+    """
     for chord in iterable:
         yield (200, chord)
         yield (200, chord[0:5])
@@ -363,8 +414,11 @@ def comp_pattern_generator_neutral2(iterable):
         yield (200, chord[0:5])
         yield (200, chord)
 
+
 def comp_pattern_generator_sad1(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a sad pattern.
+    """
     for chord in iterable:
         yield (600, chord[0:1])
         yield (500, chord[2:3])
@@ -373,8 +427,11 @@ def comp_pattern_generator_sad1(iterable):
         yield (600, chord[0:1])
         yield (500, chord[3:4])
 
+
 def comp_pattern_generator_sad2(iterable):
-    """ Converts a list of MIDI notes to (length, notes) tuples in a rock pattern. """
+    """
+    Converts a list of MIDI notes to (length, notes) tuples in a sad pattern.
+    """
     for chord in iterable:
         yield (600, chord[1:3])
         yield (500, chord[1:2])
@@ -384,104 +441,88 @@ def comp_pattern_generator_sad2(iterable):
         yield (500, chord[2:4])
 
 
-def voice_generator(iterable):
-    """ Converts a (length, notes) tuple into a (start time, list of voices) tuple """
+def scale_generator(iterable):
+    """
+    Converts a (length, notes) tuple into a (start time, list of scales) tuple
+    """
     t = 0
     for length, pitches in iterable:
-        voices = [Voice(pitch, length) for pitch in pitches]
-        yield (t, voices)
+        scales = [Scale(pitch, length) for pitch in pitches]
+        yield (t, scales)
         t += length
 
 
-def voice_combiner(iterable):
-    """ Renders samples from voices and maintains a voice pool """
+def scale_combiner(iterable):
+    """
+    Renders samples from scales and maintains a scale pool
+    """
     t = 0.0
     stopping = False
-    voice_pool = []
-    voice_time, voice_list = next(iterable)
+    scale_pool = []
+    scale_time, scale_list = next(iterable)
 
     while True:
-        # add new voices to the pool
-        while t >= voice_time:
-            voice_pool.extend(voice_list)
+        # add new scales to the pool
+        while t >= scale_time:
+            scale_pool.extend(scale_list)
 
             try:
-                voice_time, voice_list = next(iterable)
+                scale_time, scale_list = next(iterable)
             except StopIteration:
-                voice_time = float("inf")
+                scale_time = float("inf")
                 stopping = True
 
-        # pull samples from voices and mix them
+        # pull samples from scales and mix them
         sample = 0.0
         pending_removal = []
-        for voice in voice_pool:
+        for scale in scale_pool:
             try:
-                sample += next(voice)
+                sample += next(scale)
             except StopIteration:
-                # voice has stopped, remove it from the pool
-                pending_removal.append(voice)
+                # scale has stopped, remove it from the pool
+                pending_removal.append(scale)
 
         # clean up pool
-        for voice in pending_removal:
-            voice_pool.remove(voice)
+        for scale in pending_removal:
+            scale_pool.remove(scale)
 
         # stop yielding if we're done
-        if stopping and len(voice_pool) == 0:
+        if stopping and len(scale_pool) == 0:
             raise StopIteration
 
         yield sample
         t += 1000.0 / 44100.0
 
 
-def quantizer(iterable):
-    """ Converts floating point audio signals to 16 bit integers """
+def conv_to_16bits(iterable):
+    """
+    Converts floating point audio signals to 16 bit integers
+    """
     return (int(32767.0 * sample) for sample in iterable)
 
 
 def generate(id, type=0, harmony=0, lenght=1):
+    """
+    Doing magic by transforming data into sounds
+    """
     progression = []
     for i in range(0, lenght):
         chord = random.randint(0, len(CHORDS) - 1)
         progression.append(list(CHORDS.keys())[chord])
 
-    print(progression)
-
-    print(str(id))
+    #print(progression)
+    #print(str(id))
     # create pipeline
     chords = chord_generator(progression)
     comp_pattern = comp_pattern_generator(type, chords)
-    voices = voice_generator(comp_pattern)
-    samples = voice_combiner(voices)
+    scales = scale_generator(comp_pattern)
+    samples = scale_combiner(scales)
     attenuated_samples = amplifier(0.5, samples)
-    output = quantizer(attenuated_samples)
+    output = conv_to_16bits(attenuated_samples)
 
     # prepare audio stream
     filename = "output-" + str(id) + ".wav"
     audiofile = wave.open(filename, "wb")
-    audiofile.setnchannels(1)
-    audiofile.setsampwidth(2)
-    audiofile.setframerate(44100)
-
-    # render samples
-    output = list(output)
-    audiofile.writeframes(array('h', output))
-    audiofile.writeframes(array('h', output))
-    audiofile.close()
-
-
-if __name__ == "__main__":
-    progression = []
-
-    # create pipeline
-    chords = chord_generator(progression)
-    comp_pattern = comp_pattern_generator_jazz(chords)
-    voices = voice_generator(comp_pattern)
-    samples = voice_combiner(voices)
-    attenuated_samples = amplifier(0.5, samples)
-    output = quantizer(attenuated_samples)
-
-    # prepare audio stream
-    audiofile = wave.open("output.wav", "wb")
     audiofile.setnchannels(1)
     audiofile.setsampwidth(2)
     audiofile.setframerate(44100)
