@@ -6,6 +6,9 @@ if __name__ == "__main__":
     #cv2.imshow('original', img)
     
     histo_tool = HistogramAnalyzer(img)
+    
+    #histo_tool.show_rgb_hist()
+    
     #histo_tool.show_hsv()
     histo_tool.show_hsv_hist()
     print(histo_tool.get_hue_max())
