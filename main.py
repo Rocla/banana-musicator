@@ -25,7 +25,7 @@ if __name__ == '__main__':
     ##FaceDetect
 
     #Get mood
-    emotion_levels = ["HAPPY", "JAZZ", "EMO", "NEUTRAL", "SAD"]
+    emotion_levels = ["HAPPY", "JAZZ", "EMO", "NEUTRAL", "SAD", "FACES"]
     ### Hot == temperature 1
     ### Cold == temperature 0
     ### Darkness == brightness 0.0
@@ -40,6 +40,7 @@ if __name__ == '__main__':
     tmp_emotion_levels = len(emotion_levels)
     tmp_emotion_unit = 100 / tmp_emotion_levels
     tmp_periods_to_play = 10
+    tmp_is_people = False
 
     #### Mood on a scale of -100..100 with 100:happy and -100:sad
     #### Add up of positive values
@@ -50,12 +51,16 @@ if __name__ == '__main__':
     #sentiment = (mood_value / tmp_emotion_unit)
     sentiment = 0
     for i in range(0, tmp_emotion_levels+1):
-        if mood_value < 0 and abs(mood_value) <= i*tmp_emotion_unit:
-            sentiment = abs(i-5)
+        if tmp_is_people:
+            print("people")
+            sentiment = 6
+            break
+        elif mood_value < 0 and abs(mood_value) <= i*tmp_emotion_unit:
+            sentiment = abs(i-tmp_emotion_levels)
             print("neg")
             break
-        if mood_value >= 0 and mood_value <= i*tmp_emotion_unit:
-            sentiment = abs(i-5)
+        elif mood_value >= 0 and mood_value <= i*tmp_emotion_unit:
+            sentiment = abs(i-tmp_emotion_levels)
             print("pos")
             break
 

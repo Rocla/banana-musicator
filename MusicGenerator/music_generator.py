@@ -188,6 +188,23 @@ def comp_pattern_generator(pattern, iterable):
             return comp_pattern_generator_sad1(iterable)
         else:
             return comp_pattern_generator_sad2(iterable)
+    elif pattern == 5:  # faces
+        if randomValue % 7 == 0:
+            return comp_pattern_generator_happy0(iterable)
+        elif randomValue % 6 == 0:
+            return comp_pattern_generator_happy1(iterable)
+        elif randomValue % 5 == 0:
+            return comp_pattern_generator_happy2(iterable)
+        elif randomValue % 4 == 0:
+            return comp_pattern_generator_happy3(iterable)
+        elif randomValue % 3 == 0:
+            return comp_pattern_generator_happy4(iterable)
+        elif randomValue % 2 == 0:
+            return comp_pattern_generator_happy5(iterable)
+        elif randomValue % 1 == 0:
+            return comp_pattern_generator_happy6(iterable)
+        else:
+            return comp_pattern_generator_neutral2(iterable)
     else:
         print("Unknown pattern")
         return comp_pattern_generator_jazz(iterable)
