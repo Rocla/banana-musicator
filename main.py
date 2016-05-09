@@ -21,7 +21,6 @@ if __name__ == '__main__':
     ##Mama partie
 
     img = cv2.imread(imagePath)
-
     histo_tool = HistogramAnalyzer(img)
 
     #print(histo_tool.get_hue_max())
@@ -31,13 +30,26 @@ if __name__ == '__main__':
     ###HSBDecode
     ##### yellow=(50,100,100), blue=(240,100,100), red=(0,100,100), white(0,0,100), black(0,0,0)
     ##### blue_cold=(176,0,0), blue_cold_dark(176,0,255)
-    color = HSBColor(0,0,255)
+
+
+    #color = HSBColor(0,0,255)
+    color = HSBColor(histo_tool.get_hue_max() ,histo_tool.get_saturation_max(),histo_tool.get_brigthness_max())
 
     print(color)
     print("temperature", color.temperature())
     print("luminosite", color.brightness())
 
+
+
     ##FaceDetect
+    detector = ImageElementDetect(imagePath, False)
+    #print("Nb faces : " + detector.countFaces())
+    hasFaces = detector.hasFaces()  #TODO : Intégrer dans ton code Roro (valeure boolean)
+
+
+
+
+
 
     #Get mood
     emotion_levels = ["HAPPY", "JAZZ", "EMO", "NEUTRAL", "SAD", "FACES"]

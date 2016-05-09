@@ -12,6 +12,9 @@ class ImageElementDetect:
 		self._filePath = filePath
 		self._verbose = verbose
 
+	def hasFaces(self):
+		return self.countFaces() > 0
+
 	def countFaces(self):
 		"""
 		Count faces in the image with CascadeClassifier
