@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 
-import matplotlib.pyplot as plt
 import operator
 
 class HistogramAnalyzer:
@@ -40,6 +39,8 @@ class HistogramAnalyzer:
         cv2.imshow('Value', self.img_v)
         
     def show_rgb_hist(self):
+        import matplotlib.pyplot as plt
+
         plt.plot(self.hist_r)
         plt.plot(self.hist_g)
         plt.plot(self.hist_b)
@@ -49,6 +50,8 @@ class HistogramAnalyzer:
         
     
     def show_hsv_hist(self):
+        import matplotlib.pyplot as plt
+
         plt.plot(self.hist_h)
         plt.xlim([0,180])
         plt.title('Hue')
