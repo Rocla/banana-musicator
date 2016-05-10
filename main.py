@@ -14,13 +14,14 @@ from Orchestra import play_music
 
 if __name__ == '__main__':
 
-    imagePath = path + '/images/watson.jpg'
+    imagePath = path + '/images/abstract_blue_orange_red.jpg'
 
     #Extraction informations
     img = cv2.imread(imagePath)
     histo_tool = HistogramAnalyzer(img)
 
     #print(histo_tool.get_hue_max())
+    #print(histo_tool.get_hue_average())    
     #print(histo_tool.get_saturation_max())
     #print(histo_tool.get_brigthness_max())
 
@@ -29,14 +30,21 @@ if __name__ == '__main__':
     ##### blue_cold=(176,0,0), blue_cold_dark(176,0,255)
 
     #color = HSBColor(0,0,255)
-    color = HSBColor(histo_tool.get_hue_max(),
-                     histo_tool.get_saturation_max(),
-                     histo_tool.get_brigthness_max())
+    color = HSBColor(histo_tool.get_hue_average(),
+                     histo_tool.get_saturation_average(),
+                     histo_tool.get_brigthness_average())
 
+    print("Average : ")
     print(color)
     print("temperature", color.temperature())
     print("luminosite", color.brightness())
 
+    color = HSBColor(histo_tool.get_hue_max(),
+                     histo_tool.get_saturation_max(),
+                     histo_tool.get_brigthness_max())
+    print("Maximum : ")
+    print(color)
+    
     ##FaceDetect
     detector = ImageElementDetect(imagePath, False)
     #print("Nb faces : " + detector.countFaces())

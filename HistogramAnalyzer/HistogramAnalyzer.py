@@ -59,7 +59,6 @@ class HistogramAnalyzer:
         plt.xlim([0,255])
         plt.title('RGB')
         plt.show()
-        
     
     def show_hsv_hist(self):
         """Show the HSV Histograms"""
@@ -83,14 +82,30 @@ class HistogramAnalyzer:
         max_hue_f = float(self.max_index(self.hist_h))
         max_hue = max_hue_f / 180 * 256     #Get a value between 0 and 255
         return int(max_hue)
+
+    def get_hue_average(self):
+        """Return the average hue between 0 and 255"""
+        average_hue = self.average(self.hist_h)
+        average_hue = average_hue * 256 / 180
+        return average_hue
         
     def get_saturation_max(self):
         """Return the maximum saturation"""
         return int(self.max_index(self.hist_s))
 
+    def get_saturation_average(self):
+        """Return the average saturation"""
+        average_saturation = self.average(self.hist_s)
+        return average_saturation
+
     def get_brigthness_max(self):
         """Return the maximum brightness"""
         return int(self.max_index(self.hist_v))
+
+    def get_brigthness_average(self):
+        """Return the average brightness"""
+        average_saturation = self.average(self.hist_v)
+        return average_saturation
     
     def average(self, hist):
         """Calculate and return the average of an histogram"""
