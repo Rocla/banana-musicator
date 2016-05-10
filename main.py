@@ -14,6 +14,10 @@ from Orchestra import play_music
 
 if __name__ == '__main__':
 
+    #Verbose options
+    options_play_music = True
+    options_verbose = True
+
     #imagePath = path + '/images/abstract_blue_orange_red.jpg'
     imagePath = path + '/images/watson.jpg'
 
@@ -34,17 +38,19 @@ if __name__ == '__main__':
     color = HSBColor(histo_tool.get_hue_average(),
                      histo_tool.get_saturation_average(),
                      histo_tool.get_brigthness_average())
-
-    print("Average : ")
-    print(color)
-    print("temperature", color.temperature())
-    print("luminosite", color.brightness())
+    if options_verbose:
+        print("Average : ")
+        print(color)
+        print("temperature", color.temperature())
+        print("luminosite", color.brightness())
 
     color = HSBColor(histo_tool.get_hue_max(),
                      histo_tool.get_saturation_max(),
                      histo_tool.get_brigthness_max())
-    print("Maximum : ")
-    print(color)
+
+    if options_verbose:
+        print("Maximum : ")
+        print(color)
 
     ##FaceDetect
     detector = ImageElementDetect(imagePath, False)
@@ -83,15 +89,18 @@ if __name__ == '__main__':
     for i in range(0, tmp_emotion_levels+1):
         if tmp_is_people:
             sentiment = 5
-            print(emotion_levels[sentiment])
+            if options_verbose:
+                print(emotion_levels[sentiment])
             break
         elif mood_value < 0 and abs(mood_value) <= i*tmp_emotion_unit:
             sentiment = abs(i-tmp_emotion_levels)
-            print(emotion_levels[i])
+            if options_verbose:
+                print(emotion_levels[i])
             break
         elif mood_value >= 0 and mood_value <= i*tmp_emotion_unit:
             sentiment = abs(i-tmp_emotion_levels)
-            print(emotion_levels[i])
+            if options_verbose:
+                print(emotion_levels[i])
             break
 
     #Show Image
@@ -100,7 +109,8 @@ if __name__ == '__main__':
     cv2.waitKey(0)
 
     #Play Music
-    play_music(tmp_periods_to_play, sentiment)
+    if options_play_music:
+        play_music(tmp_periods_to_play, sentiment)
 
     #Ending images
     cv2.destroyAllWindows()
