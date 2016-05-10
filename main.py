@@ -14,14 +14,15 @@ from Orchestra import play_music
 
 if __name__ == '__main__':
 
-    imagePath = path + '/images/abstract_blue_orange_red.jpg'
+    #imagePath = path + '/images/abstract_blue_orange_red.jpg'
+    imagePath = path + '/images/watson.jpg'
 
     #Extraction informations
     img = cv2.imread(imagePath)
     histo_tool = HistogramAnalyzer(img)
 
     #print(histo_tool.get_hue_max())
-    #print(histo_tool.get_hue_average())    
+    #print(histo_tool.get_hue_average())
     #print(histo_tool.get_saturation_max())
     #print(histo_tool.get_brigthness_max())
 
@@ -44,11 +45,11 @@ if __name__ == '__main__':
                      histo_tool.get_brigthness_max())
     print("Maximum : ")
     print(color)
-    
+
     ##FaceDetect
     detector = ImageElementDetect(imagePath, False)
     #print("Nb faces : " + detector.countFaces())
-    hasFaces = detector.hasFaces()
+    #hasFaces = detector.hasFaces()
     #hasFaces = False
 
     #Get mood
@@ -62,14 +63,14 @@ if __name__ == '__main__':
     tmp_type_of_analyse = 2  # temperature, brightness
 
     #### How long should be the song?
-    tmp_periods_to_play = 10
+    tmp_periods_to_play = 3
 
     tmp_temperature = color.temperature()
     tmp_max_luminosity = 1
     tmp_luminosity = color.brightness()*(1/tmp_max_luminosity)
     tmp_emotion_levels = len(emotion_levels)
     tmp_emotion_unit = 100 / tmp_emotion_levels
-    tmp_is_people = hasFaces
+    tmp_is_people = detector.hasFaces()
 
     #### Mood on a scale of -100..100 with 100:happy and -100:sad
     #### Add up of positive values
@@ -81,8 +82,8 @@ if __name__ == '__main__':
     sentiment = 0
     for i in range(0, tmp_emotion_levels+1):
         if tmp_is_people:
-            print("people")
             sentiment = 5
+            print(emotion_levels[sentiment])
             break
         elif mood_value < 0 and abs(mood_value) <= i*tmp_emotion_unit:
             sentiment = abs(i-tmp_emotion_levels)
@@ -94,10 +95,14 @@ if __name__ == '__main__':
             break
 
     #Show Image
-    cv2.imshow('press on any keyboard key', img)
+
+    cv2.imshow('press_on_any_keyboard_key_to_play_the_music', img)
     cv2.waitKey(0)
 
     #Play Music
     play_music(tmp_periods_to_play, sentiment)
 
+    #Ending images
+    cv2.destroyAllWindows()
 
+    exit(0)
