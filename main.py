@@ -3,7 +3,7 @@ import cv2
 
 path = sys.path[0]
 sys.path.insert(0, path+'/HSBColor')
-sys.path.insert(0, path+'/ImageElementDetect')
+# sys.path.insert(0, path+'/ImageElementDetect')
 sys.path.insert(0, path+'/HistogramAnalyzer')
 sys.path.insert(0, path+'/MusicGenerator')
 
@@ -38,10 +38,10 @@ if __name__ == '__main__':
     print("luminosite", color.brightness())
 
     ##FaceDetect
-    #detector = ImageElementDetect(imagePath, False)
+    detector = ImageElementDetect(imagePath, False)
     #print("Nb faces : " + detector.countFaces())
-    #hasFaces = detector.hasFaces()
-    hasFaces = False
+    hasFaces = detector.hasFaces()
+    #hasFaces = False
 
     #Get mood
     emotion_levels = ["HAPPY", "JAZZ", "EMO", "NEUTRAL", "SAD", "FACES"]
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     #### Mood on a scale of -100..100 with 100:happy and -100:sad
     #### Add up of positive values
     mood_value = (tmp_temperature + tmp_luminosity) / tmp_type_of_analyse * 100
-    print(mood_value)
+    #print(mood_value)
 
     #Make music !
     #sentiment = (mood_value / tmp_emotion_unit)
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     for i in range(0, tmp_emotion_levels+1):
         if tmp_is_people:
             print("people")
-            sentiment = 6
+            sentiment = 5
             break
         elif mood_value < 0 and abs(mood_value) <= i*tmp_emotion_unit:
             sentiment = abs(i-tmp_emotion_levels)

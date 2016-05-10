@@ -21,12 +21,8 @@ class ImageElementDetect:
 		:return: int, nb faces
 		"""
 
-		path = sys.path[0]
-		print(path + '/ImageElementDetect/haarcascade_frontalface_default.xml')
-		print(self._filePath)
-
 		#http://docs.opencv.org/3.1.0/d7/d8b/tutorial_py_face_detection.html#gsc.tab=0
-		face_cascade = cv2.CascadeClassifier(path + '/ImageElementDetect/haarcascade_frontalface_default.xml')
+		face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 		img = cv2.imread(self._filePath)
 		gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
