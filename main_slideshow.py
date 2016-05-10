@@ -12,10 +12,27 @@ from HistogramAnalyzer import HistogramAnalyzer
 from imageElementDetect import ImageElementDetect
 from Orchestra import play_music
 
+def str_to_bool(string):
+    return string.lower() in ("true", "1", "yes")
+
 if __name__ == '__main__':
 
     #Slideshow
-    images_list = ["watson", "abstract_blue_orange_red", "abstract_landscape", "landscape_mountain_lake",
+    images_list = []
+
+    if len(sys.argv) > 3:
+        try:
+            options_play_music = str_to_bool(sys.argv[1])
+            options_verbose = str_to_bool(sys.argv[2])
+            
+            for i in range(3, len(sys.argv)):
+                images_list.append(sys.argv[i])
+        except:
+            print("Wrong parameters")
+    else :
+        options_play_music = True
+        options_verbose = True
+        images_list = ["watson", "abstract_blue_orange_red", "abstract_landscape", "landscape_mountain_lake",
                    "landscape_see_blue_sand", "sunset_blue", "sunset_orange", "sunset_pink",
                    "white"]
 
@@ -26,21 +43,29 @@ if __name__ == '__main__':
         img = cv2.imread(imagePath)
         histo_tool = HistogramAnalyzer(img)
 
-        color = HSBColor(histo_tool.get_hue_average(),
-                         histo_tool.get_saturation_average(),
-                         histo_tool.get_brigthness_average())
+        colorAverage = HSBColor(histo_tool.get_hue_average(),
+                     histo_tool.get_saturation_average(),
+                     histo_tool.get_brigthness_average())
+    
+        if options_verbose:
+            print("### Average for: "+str(images_list[i]))
+            print(colorAverage)
+            print "Temperature : %2f" % colorAverage.temperature()
+            print "Brightness : %2f" % colorAverage.brightness()
 
-        print("Average for: " + str(images_list[i]))
-        print(color)
-        print("temperature", color.temperature())
-        print("luminosite", color.brightness())
+        colorMax = HSBColor(histo_tool.get_hue_max(),
+                     histo_tool.get_saturation_max(),
+                     histo_tool.get_brigthness_max())
 
-        color = HSBColor(histo_tool.get_hue_max(),
-                         histo_tool.get_saturation_max(),
-                         histo_tool.get_brigthness_max())
-        print("Maximum : ")
-        print(color)
+        if options_verbose:
+            print("### Maximum for: "+str(images_list[i]))
+            print(colorMax)
+            print "Temperature : %2f" % colorMax.temperature()
+            print "Brightness : %2f" % colorMax.brightness()
 
+        #Select the HSBColor to use between colorAverage or colorMax
+        colorToUse = colorMax
+        
         detector = ImageElementDetect(imagePath, False)
 
         # Get mood
@@ -56,9 +81,9 @@ if __name__ == '__main__':
         #### How long should be the song?
         tmp_periods_to_play = 3
 
-        tmp_temperature = color.temperature()
+        tmp_temperature = colorToUse.temperature()
         tmp_max_luminosity = 1
-        tmp_luminosity = color.brightness() * (1 / tmp_max_luminosity)
+        tmp_luminosity = colorToUse.brightness() * (1 / tmp_max_luminosity)
         tmp_emotion_levels = len(emotion_levels)
         tmp_emotion_unit = 100 / tmp_emotion_levels
         tmp_is_people = detector.hasFaces()
@@ -68,6 +93,8 @@ if __name__ == '__main__':
         sentiment = 0
         sentiment_name = ""
         for i in range(0, tmp_emotion_levels + 1):
+            if options_verbose:
+                print("### Mood : ")
             if tmp_is_people:
                 sentiment = 5
                 sentiment_name = emotion_levels[sentiment]
