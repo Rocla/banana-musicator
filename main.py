@@ -14,37 +14,33 @@ from Orchestra import play_music
 
 if __name__ == '__main__':
 
-    #imagePath = path + '/images/abstract_blue_orange_red.jpg'
+    #Image used to test
     imagePath = path + '/images/watson.jpg'
 
-    #Extraction informations
+    ##Extraction informations
     img = cv2.imread(imagePath)
     histo_tool = HistogramAnalyzer(img)
 
-    #print(histo_tool.get_hue_max())
-    #print(histo_tool.get_hue_average())
-    #print(histo_tool.get_saturation_max())
-    #print(histo_tool.get_brigthness_max())
-
-    ###HSBDecode
-    ##### yellow=(50,100,100), blue=(240,100,100), red=(0,100,100), white(0,0,100), black(0,0,0)
-    ##### blue_cold=(176,0,0), blue_cold_dark(176,0,255)
-
-    #color = HSBColor(0,0,255)
-    color = HSBColor(histo_tool.get_hue_average(),
+    colorAverage = HSBColor(histo_tool.get_hue_average(),
                      histo_tool.get_saturation_average(),
                      histo_tool.get_brigthness_average())
 
-    print("Average : ")
-    print(color)
-    print("temperature", color.temperature())
-    print("luminosite", color.brightness())
+    print("### Average : ")
+    print(colorAverage)
+    print "Temperature : %2f" % colorAverage.temperature()
+    print "Brightness : %2f" % colorAverage.brightness()
 
-    color = HSBColor(histo_tool.get_hue_max(),
+    colorMax = HSBColor(histo_tool.get_hue_max(),
                      histo_tool.get_saturation_max(),
                      histo_tool.get_brigthness_max())
-    print("Maximum : ")
-    print(color)
+    
+    print("### Maximum : ")
+    print(colorMax)
+    print "Temperature : %2f" % colorMax.temperature()
+    print "Brightness : %2f" % colorMax.brightness()
+
+    #Select the HSBColor to use between colorAverage or colorMax
+    colorToUse = colorMax
 
     ##FaceDetect
     detector = ImageElementDetect(imagePath, False)
@@ -52,7 +48,7 @@ if __name__ == '__main__':
     #hasFaces = detector.hasFaces()
     #hasFaces = False
 
-    #Get mood
+    ##Get mood
     emotion_levels = ["HAPPY", "JAZZ", "EMO", "NEUTRAL", "SAD", "FACES"]
     ### Hot == temperature 1
     ### Cold == temperature 0
@@ -65,9 +61,9 @@ if __name__ == '__main__':
     #### How long should be the song?
     tmp_periods_to_play = 3
 
-    tmp_temperature = color.temperature()
+    tmp_temperature = colorToUse.temperature()
     tmp_max_luminosity = 1
-    tmp_luminosity = color.brightness()*(1/tmp_max_luminosity)
+    tmp_luminosity = colorToUse.brightness()*(1/tmp_max_luminosity)
     tmp_emotion_levels = len(emotion_levels)
     tmp_emotion_unit = 100 / tmp_emotion_levels
     tmp_is_people = detector.hasFaces()
@@ -81,6 +77,7 @@ if __name__ == '__main__':
     #sentiment = (mood_value / tmp_emotion_unit)
     sentiment = 0
     for i in range(0, tmp_emotion_levels+1):
+        print("### Sentiment : ")
         if tmp_is_people:
             sentiment = 5
             print(emotion_levels[sentiment])
